@@ -1,26 +1,19 @@
 import express from 'express';
+import bookController from '../controllers/bookController.js';
+import bookService from '../services/goodreadsService.js';
 
 const bookRouter = express.Router();
 
-function router(nav, client) {
+function router(nav) {
+  const { getIndex, getById, middleware } = bookController(nav, bookService());
+
+  bookRouter.use(middleware);
+
   bookRouter.route('/')
-    .get((req, res) => {
-      const getBooks = async () => {
-        const { rows } = await client.query('select * from library.books');
-        res.render('bookListView', { title: 'My library ', nav, books: rows });
-      };
-      getBooks();
-    });
+    .get(getIndex);
 
   bookRouter.route('/:id')
-    .get((req, res) => {
-      const getBookById = async (id) => {
-        const { rows } = await client.query('select * from library.books where id = $1', [id]);
-        res.render('bookView', { title: 'My library ', nav, book: rows[0] });
-      };
-      const { id } = req.params;
-      getBookById(id);
-    });
+    .get(getById);
   return bookRouter;
 }
 

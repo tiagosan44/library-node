@@ -3,12 +3,25 @@ import chalk from 'chalk';
 import morgan from 'morgan';
 import path from 'path';
 import pg from 'pg';
+import bodyParser from 'body-parser';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import adminRouter from './routes/adminRoutes.js';
+import authRouter from './routes/authRoutes.js';
 import bookRouter from './routes/bookRoutes.js';
+import passport from './config/passport.js';
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(morgan('tiny'));
+
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+app.use(cookieParser());
+app.use(session({ secret: 'library', resave: false, saveUninitialized: true, }));
+passport(app);
 
 app.use(express.static(path.join(path.resolve(), 'public')));
 app.use('/css', express.static(path.join(path.resolve(), '/node_modules/bootstrap/dist/css')));
@@ -37,6 +50,8 @@ client.connect((err) => {
 });
 
 app.use('/books', bookRouter(nav, client));
+app.use('/admin', adminRouter());
+app.use('/auth', authRouter(nav));
 
 app.get('/', (req, res) => {
   res.render(

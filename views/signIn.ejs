@@ -2,8 +2,8 @@
 
   <head>
     <title><%=title%></title>
-    <link href="css/styles.css" rel="stylesheet">
-    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="/css/styles.css" rel="stylesheet">
+    <link href="/css/bootstrap.min.css" rel="stylesheet">
   </head>
 
   <body >
@@ -73,30 +73,18 @@
 
 
               <!--/stories-->
-              <% for(let i = 0; i < books.length; i++) { %>
-                <div class="row">
-                    <br>
-                    <div class="col-md-2 col-sm-3 text-center">
-                    <a class="story-title" href="#"><img alt="" src="http://api.randomuser.me/portraits/thumb/men/58.jpg"
-                        style="width:100px;height:100px" class="img-circle"></a>
-                    </div>
-                    <div class="col-md-10 col-sm-9">
-                    <h3><%=books[i].title %></h3>
-                    <div class="row">
-                        <div class="col-xs-9">
-                        <h4><span class="label label-default"><%=books[i].author %></span></h4>
-                        <h4>
-                            <small style="font-family:courier,'new courier';" class="text-muted"> <%=books[i].genre %> 
-                                <a href="/books/<%=books[i]._id%>" class="text-muted"> Read more </a></small>
-                        </h4>
-                        </div>
-                        <div class="col-xs-3"></div>
-                    </div>
-                    <br><br>
-                    </div>
+              <div class="row">
+                <br>
+                <div class="col-md-2 col-sm-3 text-center">
+                  Sign in 
+                  <form name="signInform" action="/auth/signIn" method="POST">
+                    User name: <input name="username" id="username"/><br/>
+                    Password: <input name="password" id="password"/><br/>
+                    <input type="submit" value="Sign up"/>
+                  </form>
                 </div>
-                <hr>
-              <% } %>
+              </div>
+              <hr>
               <!--/stories-->
 
 
@@ -106,11 +94,7 @@
 
             </div>
           </div>
-
-
-
         </div>
-        <!--/col-12-->
       </div>
     </div>
 
